@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -9,6 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Registeration = () => {
+  const navigate=useNavigate()
   const yupValidation = Yup.object().shape({
     username: Yup.string()
       .required("Please enter some value.")
@@ -29,6 +30,7 @@ const Registeration = () => {
     reset();
     dispatch(registartionData(data));
     toast.success("Registration Successfully!!!");
+    navigate("/login")
   };
 
   return (

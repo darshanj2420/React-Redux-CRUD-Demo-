@@ -68,18 +68,10 @@ const ViewPost = () => {
   };
   const total = users.length;
   const onButtonClick = (type) => {
-    if (type === "prev") {
-      if (currentPage === 1) {
-        setCurrentPage(1);
-      } else {
-        setCurrentPage(currentPage - 1);
-      }
-    } else if (type === "next") {
-      if (Math.ceil(total / pageSize) === currentPage) {
-        setCurrentPage(currentPage);
-      } else {
-        setCurrentPage(currentPage + 1);
-      }
+    if (type === "prev" && currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    } else if (type === "next" && currentPage < Math.ceil(total / pageSize)) {
+      setCurrentPage(currentPage + 1);
     }
   };
   return (
@@ -175,31 +167,36 @@ const ViewPost = () => {
               </select>
 
               <div className="my-3 text-center">
+              {currentPage > 1 && (
                 <button
                   className="px-3 py-1 m-1 text-center btn btn-primary"
                   onClick={() => onButtonClick("prev")}
                 >
                   Previous
                 </button>
-
-                {pageNumber.map((Elem) => {
-                  return (
-                    <Fragment>
-                      <button
-                        className="px-3 py-1 m-1 btn btn-info text-center btn-outline-dark"
-                        onClick={() => ChangePage(Elem)}
-                      >
-                        {Elem}
-                      </button>
-                    </Fragment>
-                  );
-                })}
+              )}
+              
+              {pageNumber.map((Elem) => {
+                return (
+                  <Fragment>
+                    <button
+                      className="px-3 py-1 m-1 text-center btn btn-outline-dark"
+                      onClick={() => ChangePage(Elem)}
+                    >
+                      {Elem}
+                    </button>
+                  </Fragment>
+                );
+              })}
+              
+              {currentPage < Math.ceil(total / pageSize) && (
                 <button
                   className="px-3 py-1 m-1 text-center btn btn-primary"
                   onClick={() => onButtonClick("next")}
                 >
                   Next
                 </button>
+              )}
               </div>
             </Fragment>
           ) : (

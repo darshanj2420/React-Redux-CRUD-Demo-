@@ -11,7 +11,7 @@ const Post = () => {
   const [sortOrder, setSortOrder] = useState("asc");
   const [users, setUsers] = useState(getPost);
 
-          // Start Sorting part 
+  // Start Sorting part
   const handleSort = (field) => {
     const sortedUsers = [...users].sort((a, b) => {
       if (sortOrder === "asc") {
@@ -26,7 +26,6 @@ const Post = () => {
     setSortField(field); // set the current sort field
   };
   const [sortField, setSortField] = useState(null);
-
 
   const sortedAndFilteredData = useMemo(() => {
     const filteredUsers = users.filter((user) => {
@@ -47,9 +46,9 @@ const Post = () => {
     return filteredUsers.slice(firstPageIndex, lastPageIndex);
   }, [users, sortOrder, searchQuery, currentPage, pageSize]);
 
-           // End of Sorting Part
+  // End of Sorting Part
 
-        // Start of Pagination 
+  // Start of Pagination
   const pageNumber = [];
 
   for (let i = 1; i <= Math.ceil(users.length / pageSize); i++) {
@@ -60,21 +59,13 @@ const Post = () => {
   };
   const total = users.length;
   const onButtonClick = (type) => {
-    if (type === "prev") {
-      if (currentPage === 1) {
-        setCurrentPage(1);
-      } else {
-        setCurrentPage(currentPage - 1);
-      }
-    } else if (type === "next") {
-      if (Math.ceil(total / pageSize) === currentPage) {
-        setCurrentPage(currentPage);
-      } else {
-        setCurrentPage(currentPage + 1);
-      }
+    if (type === "prev" && currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    } else if (type === "next" && currentPage < Math.ceil(total / pageSize)) {
+      setCurrentPage(currentPage + 1);
     }
   };
-       // End of Pagination
+  // End of Pagination
 
   return (
     <div className="container-fluid">
@@ -149,12 +140,14 @@ const Post = () => {
             </select>
 
             <div className="my-3 text-center">
-              <button
-                className="px-3 py-1 m-1 text-center btn btn-primary"
-                onClick={() => onButtonClick("prev")}
-              >
-                Previous
-              </button>
+              {currentPage > 1 && (
+                <button
+                  className="px-3 py-1 m-1 text-center btn btn-primary"
+                  onClick={() => onButtonClick("prev")}
+                >
+                  Previous
+                </button>
+              )}
 
               {pageNumber.map((Elem) => {
                 return (
@@ -168,12 +161,15 @@ const Post = () => {
                   </Fragment>
                 );
               })}
-              <button
-                className="px-3 py-1 m-1 text-center btn btn-primary"
-                onClick={() => onButtonClick("next")}
-              >
-                Next
-              </button>
+
+              {currentPage < Math.ceil(total / pageSize) && (
+                <button
+                  className="px-3 py-1 m-1 text-center btn btn-primary"
+                  onClick={() => onButtonClick("next")}
+                >
+                  Next
+                </button>
+              )}
             </div>
           </Fragment>
         ) : (
